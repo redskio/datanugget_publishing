@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Nugget / 메인 페이지</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js" integrity="sha512-zjlf0U0eJmSo1Le4/zcZI51ks5SjuQXkU0yOdsOBubjSmio9iCUp8XPLkEAADZNBdR9crRy3cniZ65LF2w8sRA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="js/daterangepicker.min.js"></script>
+
+    <script src="js/default.js"></script>
+    <script src="inquiry_modal.js"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/setting.css">
+
+    <script>
+        $(function() {
+            $('.select').on('click', '.select__head', function() {
+                if ($(this).hasClass('open')) {
+                    $(this).removeClass('open');
+                    $(this).next().fadeOut();
+                } else {
+                    $('.select__head').removeClass('open');
+                    $('.select__list').fadeOut();
+                    $(this).addClass('open');
+                    $(this).next().fadeIn();
+                }
+            });
+
+            $('.select').on('click', '.select__item', function() {
+                $('.select__head').removeClass('open');
+                $(this).parent().fadeOut();
+                $(this).parent().prev().text($(this).text());
+                $(this).parent().prev().prev().val($(this).text());
+            });
+
+            $(document).click(function (e) {
+                if (!$(e.target).closest('.select').length) {
+                    $('.select__head').removeClass('open');
+                    $('.select__list').fadeOut();
+                }
+            });
+
+            let options = {"show": true}
+
+            $(".inquiry_row1").on("click", function() {
+                $('#exampleModalCenter').modal(options);
+            });
+
+            $(".inquiry_row2").on("click", function() {
+                $('#exampleModalCenter').modal(options);
+            });
+
+            $(".inquiry_row3").on("click", function() {
+                $('#exampleModalCenter').modal(options);
+            });
+
+            $(".inquiry_row4").on("click", function() {
+                $('#exampleModalCenter').modal(options);
+            });
+            $(".inquiry_row5").on("click", function() {
+                $('#exampleModalCenter').modal(options);
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div id="datanugget_wrap" class="nugget_wrap">
+        <header class="container row px-0 mr-0">
+            <div class="container_wrap col-12 px-0">
+                <div class="header_wrap d-flex col-12 p-0 justify-content-between">
+                    <ul class="nav col-4 px-0 align-items-center">
+                        <li class="nugget_tit">
+                            <p>기능성 화장품 광고 프로젝트</p>
+                        </li>
+                        <li class="nugget_number">
+                            <p>A100123</p>
+                        </li>
+                        <li class="sns_container">
+                            <a href="#" class="sns_icon a">
+                                <span class="hidden">네이버 바로가기</span>
+                            </a>
+                        </li>
+                        <li class="sns_container">
+                            <a href="#" class="sns_icon b">
+                                <span class="hidden">페이스북 바로가기</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav col-7 px-0 align-items-center justify-content-end">
+                        <li class="intro_btn">
+                            <a href="#" aria-current="page">플랜 구독</a>
+                        </li>
+                        <li class="info_btn">
+                            <a href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                <span class="hidden">
+                                    알람 버튼
+                                </span>
+                            </a>
+                            <div class="dropdown-menu drop_contaienr" aria-labelledby="navbarDropdown">
+                                <p>
+                                    알림
+                                </p>
+                                <a class="drop_text d-flex align-items-center" href="#">
+                                    기능성 화장품 광고현황이 업데이트 돠었습니다.
+                                    <span class="close_btn ml-auto"></span>
+                                </a>
+                                <a class="drop_text d-flex align-items-center" href="#">
+                                    등산화 프로젝트가 등록되었습니다.
+                                    <span class="close_btn ml-auto"></span>
+                                </a>
+                                <a class="drop_text d-flex align-items-center" href="#">
+                                    데이터너겟의 무료 체험이 종료되었습니다. 유료플랜 구매 후 서비스 이용이 가능합니다.
+                                    <span class="close_btn ml-auto"></span>
+                                </a>
+                                <a class="drop_text d-flex align-items-center" href="#">
+                                    기능성화장품 광고현황이 업데이트 되었습니다.
+                                    <span class="close_btn ml-auto"></span>
+                                </a>
+                            </div>
+                        </li>
+                        <li class="info_btn">
+                            <a href="#" id="mypageDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
+                                <span class="hidden">
+                                    마이페이지 버튼
+                                </span>
+                            </a>
+                            <div class="dropdown-menu drop_contaienr" aria-labelledby="mypageDropdown">
+                                <a class="drop_text" href="#">
+                                    프로필
+                                </a>
+                                <a class="drop_text" href="#">
+                                    이용현황
+                                </a>
+                                <a class="drop_text" href="#">
+                                    설정
+                                </a>
+                                <a class="drop_text" href="#">
+                                    1:1 문의
+                                </a>
+                                <a class="drop_text" href="#">
+                                    로그아웃
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="header_sub col-12 px-0">
+                <div class="d-flex p-0">
+                    <div class="d-flex intro_box">
+                        <div class="inquiry_box d-flex align-items-center">
+                            <p>
+                                영감 가이드
+                            </p>
+                        </div>
+                    </div>
+                    <div id="demo" class="d-flex intro_box calendar ml-auto mr-5">
+                        <div class="intro_calendar d-flex align-items-center">
+                            <span class="d-flex align-items-center">
+
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="container nugget_content row px-0">
+            <section class="col-12 p-0">
+                <h2 class="hidden">
+                    Data Nugget 본문 영역
+                </h2>
+                <div class="main_content">
+                    <article>
+                        <div class="analytics">
+                            <div class="box_container col-12 p-0">
+
+                                <div class="box inquiry">
+
+                                    <div class="row text-center inquiry_title">
+                                        <h2 class="col">
+                                            1:1 문의
+                                        </h2>
+                                    </div>
+
+                                    <div class="box_content row align-items-center mb-3">
+                                        <div class="col-3 text-right">
+                                            <p>
+                                                문의 종류<span class="necessary">*</span>
+                                            </p>
+                                        </div>
+
+                                        <div class="col-9 select mb-0 pl-0">
+                                            <input class="select__input" type="hidden" name="">
+                                            <div class="select__head pl-3">
+                                                선택
+                                            </div>
+                                            <ul class="select__list" style="display: none;">
+                                                <li class="select__item">데이터 너겟 이용문의</li>
+                                                <li class="select__item">오류/의견</li>
+                                                <li class="select__item">서비스 제안, 칭찬</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="box_content row align-items-center mb-3">
+                                        <div class="inquiry_list col-3 text-right">
+                                            <p>
+                                                문의 내용<span class="necessary">*</span>
+                                            </p>
+                                        </div>
+                                        <div class="inquiry_content col-8 p-0">
+                                            <textarea name="" placeholder="고객센터(02-0000-0000)로 연락주시면 빠른 응대가 가능합니다." cols="71" rows="10" class="inquiry_content_textarea"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="box_content row align-items-center">
+                                        <div class="inquiry_list col-3 text-right">
+                                            <p>
+                                                파일첨부<span class="necessary">*</span>
+                                            </p>
+                                        </div>
+                                        <div class="attach_field col-5 text-center">
+                                            <img src="images/attach_btn.png" class="attach_btn_img" alt="" >
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="box_content row my-4">
+                                        <div class="col-3"></div>
+                                        <div class="agreement_content col-8 p-0">
+                                            <p class="agreement_title">개인정보 수집 이용 안내</p>
+                                            <p class="agreement_detail">문의에 대한 처리 및 답변을 위해 계정정보, 첨부파일(선택)정보가 수집되며, 수집된 정보는 3년간 보관합니다.<br>
+                                            이에 동의하지 않을 경우 문의/제안/신고 등록이 불가하며, 선택항목은 입력하지 않더라도 서비스이용에 제한을 두지 않습니다.
+                                            </p>
+                                            <div class="custom-control custom-checkbox mt-4">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                                                <label class="custom-control-label" for="customCheck1">개인정보 수집 및 이용 안내에 동의합니다.</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box_content row">
+                                        <div class="inquiry_send_btns col text-center">
+                                            <span class="inquiry_btn send_btn mr-2">문의하기</span>
+                                            <span class="inquiry_btn cancel_btn ml-2">취소</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="box inquiry mt-5">
+                                    <div class="box_tit d-flex justify-content-center">
+                                        <h2>
+                                            1:1 문의 내역
+                                        </h2>
+                                    </div>
+                                    <div class="box_content">
+                                        <table class="table_style">
+                                            <thead>
+                                                <tr>
+                                                    <th>날짜</th>
+                                                    <th>문의종류</th>
+                                                    <th>본문</th>
+                                                    <th>상태</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="inquiry_row1">
+                                                    <td>2021.10.15</td>
+                                                    <td>데이터 너겟 이용문의</td>
+                                                    <td>안녕하세요 데이터너겟을 사용해보고 싶은데 이용 요금이 궁금해서 문의글을 .....</td>
+                                                    <td>답변 대기중</td>
+                                                </tr>
+                                                <tr class="inquiry_row2">
+                                                    <td>2021.10.15</td>
+                                                    <td>데이터 너겟 이용문의</td>
+                                                    <td>안녕하세요 데이터너겟을 사용해보고 싶은데 이용 요금이 궁금해서 문의글을 .....</td>
+                                                    <td>답변 대기중</td>
+                                                </tr>
+                                                <tr class="inquiry_row3">
+                                                    <td>2021.10.15</td>
+                                                    <td>데이터 너겟 이용문의</td>
+                                                    <td>안녕하세요 데이터너겟을 사용해보고 싶은데 이용 요금이 궁금해서 문의글을 .....</td>
+                                                    <td>답변 대기중</td>
+                                                </tr>
+                                                <tr class="inquiry_row4">
+                                                    <td>2021.10.15</td>
+                                                    <td>데이터 너겟 이용문의</td>
+                                                    <td>안녕하세요 데이터너겟을 사용해보고 싶은데 이용 요금이 궁금해서 문의글을 .....</td>
+                                                    <td>답변 대기중</td>
+                                                </tr>
+                                                <tr class="inquiry_row5">
+                                                    <td>2021.10.15</td>
+                                                    <td>데이터 너겟 이용문의</td>
+                                                    <td>안녕하세요 데이터너겟을 사용해보고 싶은데 이용 요금이 궁금해서 문의글을 .....</td>
+                                                    <td>답변 대기중</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row justify-content-center mt-5">
+                                        <span class="read_more_btn">더보기</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+            <div class="back_to_top"></div>
+        </main>
+    </div>
+    <aside>
+        <button type="button" class="circle_btn left"> 
+            <span class="hidden">왼쪽 이동</span>
+        </button>
+        <nav class="nugget_gnb">
+            <svg class="nugget_logo" id="Dngt_bi" xmlns="http://www.w3.org/2000/svg" width="160" height="26.243" viewBox="0 0 160 26.243">
+                <a 
+                    xlink:href="#" 
+                    xlink:title="Data Nugget"
+                    target="_blank">
+                    <path id="Path_422" data-name="Path 422" d="M886.554,246.237a15.853,15.853,0,0,1-2.169,1.815,1.466,1.466,0,0,1-1.9-.2q-.108-.116-.222-.229a9.6,9.6,0,0,0-1.72-1.368,9.725,9.725,0,0,0-10.227-.049,9.538,9.538,0,0,0-1.8,1.418c-.064.065-.128.13-.19.2a1.467,1.467,0,0,1-1.9.2,15.877,15.877,0,0,1-3.766-3.715,1.469,1.469,0,0,1,.181-1.921c.075-.07.148-.141.221-.214a9.721,9.721,0,0,0,1.5-1.931h0A9.748,9.748,0,0,0,864.346,230a9.891,9.891,0,0,0-1.284-1.581q-.165-.164-.334-.319a1.474,1.474,0,0,1-.24-1.926,15.913,15.913,0,0,1,3.722-3.8,1.479,1.479,0,0,1,1.958.224c.113.125.229.247.349.368a9.6,9.6,0,0,0,1.787,1.41,9.714,9.714,0,0,0,11.961-1.413q.2-.2.379-.4a1.473,1.473,0,0,1,1.955-.226,15.94,15.94,0,0,1,3.714,3.756,1.49,1.49,0,0,1-.214,1.967c-.128.115-.255.235-.378.358a9.713,9.713,0,0,0,0,13.749q.115.115.232.224a1.485,1.485,0,0,1,.217,1.955A15.71,15.71,0,0,1,886.554,246.237Z" transform="translate(-862.236 -222.066)" fill="#fff"/>
+                    <g>
+                        <path id="Path_423" data-name="Path 423" d="M1010.332,229.28a1.847,1.847,0,1,0-1.884-1.884,1.871,1.871,0,0,0,1.884,1.884Z" transform="translate(-888.291 -222.693)" fill="#fff"/>
+                        <path id="Path_424" data-name="Path 424" d="M1028.332,229.28a1.847,1.847,0,1,0-1.883-1.884,1.87,1.87,0,0,0,1.883,1.884Z" transform="translate(-891.499 -222.693)" fill="#fff"/>
+                    </g>
+                    <g id="Group_20" data-name="Group 20" transform="translate(30.84 2.101)">
+                      <path id="Path_425" data-name="Path 425" d="M1042.739,235.9a3.169,3.169,0,0,0-1.3-1.955,3.82,3.82,0,0,0-2.319-.653,3.094,3.094,0,0,0-2.1.724,3.455,3.455,0,0,0-1.3,1.884Zm-7.172,2.391a3.387,3.387,0,0,0,1.16,2.246,3.862,3.862,0,0,0,2.465.8A3.721,3.721,0,0,0,1041,240.9a3.369,3.369,0,0,0,1.3-1.159h3.26A7.524,7.524,0,0,1,1043.1,243a6.346,6.346,0,0,1-3.839,1.16,6.8,6.8,0,0,1-2.681-.507,5.419,5.419,0,0,1-2.173-1.521,7.616,7.616,0,0,1-1.449-2.174,7.931,7.931,0,0,1-.507-2.608,7.511,7.511,0,0,1,.507-2.535,5.862,5.862,0,0,1,1.377-2.1,6.253,6.253,0,0,1,2.245-1.667,6.176,6.176,0,0,1,2.535-.58,6.925,6.925,0,0,1,3.188.8,7.032,7.032,0,0,1,2.465,2.174,5.107,5.107,0,0,1,.942,1.884,7.5,7.5,0,0,1,.29,2.317v.652Z" transform="translate(-923.409 -225.665)" fill="#fff"/>
+                      <path id="Path_426" data-name="Path 426" d="M1050.85,239.583v-13.4h3.041v4.2h1.957v2.68h-1.957v6.519c0,.726.29,1.087,1.086,1.087h.87v2.681h-1.16A3.551,3.551,0,0,1,1050.85,239.583Z" transform="translate(-926.688 -224.901)" fill="#fff"/>
+                      <path id="Path_427" data-name="Path 427" d="M935.854,239.583v-13.4h3.041v4.2h1.958v2.68h-1.958v6.519c0,.726.291,1.087,1.087,1.087h.87v2.681h-1.16A3.549,3.549,0,0,1,935.854,239.583Z" transform="translate(-906.195 -224.901)" fill="#fff"/>
+                      <path id="Path_428" data-name="Path 428" d="M924.461,230.61a6.739,6.739,0,1,0,.028,13.477,6.536,6.536,0,0,0,3.776-1.159v1.1h2.9V237.35A6.739,6.739,0,0,0,924.461,230.61Zm.038,10.5a3.742,3.742,0,1,1,2.671-1.1,3.767,3.767,0,0,1-2.671,1.1Z" transform="translate(-902.966 -225.69)" fill="#fff"/>
+                      <path id="Path_429" data-name="Path 429" d="M949.413,230.61a6.739,6.739,0,1,0,.028,13.477,6.537,6.537,0,0,0,3.776-1.159v1.1h2.9V237.35A6.739,6.739,0,0,0,949.413,230.61Zm.038,10.5a3.742,3.742,0,1,1,2.671-1.1,3.767,3.767,0,0,1-2.671,1.1Z" transform="translate(-907.413 -225.69)" fill="#fff"/>
+                      <path id="Path_430" data-name="Path 430" d="M910.347,224.623V230.7a7.184,7.184,0,0,0-3.789-1.159,6.739,6.739,0,1,0,6.684,6.739V224.623Zm-3.815,15.424a3.768,3.768,0,1,1,3.768-3.768A3.767,3.767,0,0,1,906.532,240.047Z" transform="translate(-899.764 -224.623)" fill="#fff"/>
+                      <path id="Path_431" data-name="Path 431" d="M1006.21,249.168a3.945,3.945,0,0,1-2.97,1.179,3.607,3.607,0,0,1-1.955-.538,2.511,2.511,0,0,1-1.3-1.408h-2.9a6.334,6.334,0,0,0,2.318,3.374,6.583,6.583,0,0,0,3.912,1.108,6.3,6.3,0,0,0,4.931-1.988,4.705,4.705,0,0,0,1.376-2.494h-2.9a1.368,1.368,0,0,1-.5.767Z" transform="translate(-917.106 -228.86)" fill="#fff"/>
+                      <path id="Path_432" data-name="Path 432" d="M1003.289,230.61a6.739,6.739,0,1,0,6.739,6.739A6.739,6.739,0,0,0,1003.289,230.61Zm0,10.5a3.767,3.767,0,1,1,3.766-3.767,3.767,3.767,0,0,1-3.766,3.767Z" transform="translate(-917.011 -225.69)" fill="#fff"/>
+                      <path id="Path_433" data-name="Path 433" d="M968.44,244.2v-7.607a2.723,2.723,0,0,1,2.681-2.681h0a2.738,2.738,0,0,1,2.753,2.681V244.2h2.97v-7.534a5.735,5.735,0,0,0-5.723-5.722h0a5.781,5.781,0,0,0-5.722,5.722V244.2Z" transform="translate(-911.46 -225.749)" fill="#fff"/>
+                      <path id="Path_434" data-name="Path 434" d="M983.949,231v7.534a2.738,2.738,0,0,0,2.681,2.752h0a2.751,2.751,0,0,0,2.753-2.752V231h2.97v7.462a5.688,5.688,0,0,1-5.723,5.722h0a5.734,5.734,0,0,1-5.722-5.722V231Z" transform="translate(-914.224 -225.759)" fill="#fff"/>
+                      <path id="Path_435" data-name="Path 435" d="M1024.2,249.168a3.945,3.945,0,0,1-2.97,1.179,3.609,3.609,0,0,1-1.956-.538,2.513,2.513,0,0,1-1.3-1.408h-2.9a6.336,6.336,0,0,0,2.318,3.374,6.581,6.581,0,0,0,3.912,1.108,6.3,6.3,0,0,0,4.926-1.988,4.7,4.7,0,0,0,1.376-2.494h-2.9A1.371,1.371,0,0,1,1024.2,249.168Z" transform="translate(-920.312 -228.86)" fill="#fff"/>
+                      <path id="Path_436" data-name="Path 436" d="M1021.279,230.61a6.739,6.739,0,1,0,6.739,6.739,6.739,6.739,0,0,0-6.739-6.739Zm0,10.5a3.767,3.767,0,1,1,3.767-3.767,3.767,3.767,0,0,1-3.767,3.767Z" transform="translate(-920.217 -225.69)" fill="#fff"/>
+                    </g>
+                </a>
+            </svg>
+            <div class="gnb_accordion" id="nuggetAccordion">
+                <div class="gnb_depth1">
+                    <a href="#" class="depth d-flex align-items-center">
+                        <span class="depth_image a mr-4"></span>
+                        <span class="depth_desc">커스텀 리포트</span>
+                    </a>
+                </div>
+                <div class="gnb_depth1">
+                    <a href="#" class="depth d-flex align-items-center">
+                        <span class="depth_image b mr-4"></span>
+                        <span class="depth_desc">Google Analytics 분석</span>
+                    </a>
+                    <ul class="gnb_depth2">
+                        <li>
+                            <a href="#">사용자</a>
+                        </li>
+                        <li>
+                            <a href="#">이벤트</a>
+                        </li>
+                        <li>
+                            <a href="#">행동 흐름</a>
+                        </li>
+                        <li>
+                            <a href="#">수익</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="gnb_depth1">
+                    <a href="#" class="depth d-flex align-items-center">
+                        <span class="depth_image c mr-4"></span>
+                        <span class="depth_desc">광고 성과 집중분석</span>
+                    </a>
+                    <ul class="gnb_depth2">
+                        <li>
+                            <a href="#">전체광고</a>
+                        </li>
+                        <li>
+                            <a href="#">페이스북 광고</a>
+                        </li>
+                        <li>
+                            <a href="#">네이버 검색 광고</a>
+                        </li>
+                        <li>
+                            <a href="#">구글 검색 광고</a>
+                        </li>
+                        <li>
+                            <a href="#">구글 디스플레이 광고</a>
+                        </li>
+                    </ul>
+                </div>
+                <hr class="line">
+                <div class="gnb_depth1">
+                    <a href="#" class="depth d-flex align-items-center">
+                        <span class="depth_image d mr-4"></span>
+                        <span class="depth_desc">설정</span>
+                    </a>
+                    <ul class="gnb_depth2">
+                        <li>
+                            <a href="#">데이터 연동</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="gnb_depth1">
+                    <a href="#" class="depth d-flex align-items-center">
+                        <span class="depth_image e mr-4"></span>
+                        <span class="depth_desc">계정 관리</span>
+                    </a>
+                    <ul class="gnb_depth2">
+                        <li>
+                            <a href="#">사용자 초대</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="gnb_depth1">
+                    <a href="#"  class="active depth d-flex align-items-center">
+                        <span class="depth_image f mr-4"></span>
+                        <span class="depth_desc">영감 너겟</span>
+                    </a>
+                    <ul class="gnb_depth2">
+                        <li>
+                            <a href="#">영감 가이드</a>
+                        </li>
+                        <li>
+                            <a href="#" class="active">1:1 문의</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    </aside>
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">데이터 너겟 이용문의</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 inquiry_title">
+                        <textarea name="" placeholder="광고 계정에 수동 결제 수단을 사용할 수 있나요?" disabled cols="124" rows="1" class="inquiry_content_textarea"></textarea>
+                        <div class="inquiry_time">2021.08.27</div>
+                    </div>
+                    <div class="inquiry_content">
+                        <textarea name="" placeholder="광고 계정에 수동 결제 수단을 사용할 수 있나요?" disabled cols="124" rows="7" class="inquiry_content_textarea"></textarea>
+                    </div>
+                    <div class="modal_modify_btns text-right mt-3 mr-3">
+                        <button type="button" class="modal_btn modal_delete_btn">삭제</button>
+                        <button type="button" class="modal_btn modal_modify_btn">수정</button>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                        <p>답변내용</p>
+                    </div>
+                    <div class="inquiry_reply row mb-3">
+                        <p>
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Minus dolores facere alias earum quisquam deleniti quam amet laborum ut labore molestiae ipsam iste,nobis    recusandae, voluptas rem laboriosam nemo expedita.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

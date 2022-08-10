@@ -1,0 +1,312 @@
+.wrapper {
+    margin-top: 7.44rem;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+.canvas1_container, .canvas2_container, .canvas3_container, .canvas4_container, .step0_boxes, .step2_boxes, .step3_boxes, .step4_boxes {
+    height: 100px;
+}
+.percent_s0_box1, .percent_s0_box2, .percent_s0_box3, .percent_s0_box4, .percent_s0_box5, .percent_s1_center_box,
+.percent_s2_box1, .percent_s2_box2, .percent_s2_box3, .percent_s2_box4, .percent_s2_box5,
+.percent_s3_box1, .percent_s3_box2, .percent_s3_box3, .percent_s3_box4, .percent_s3_box5,
+.percent_s4_box1, .percent_s4_box2, .percent_s4_box3, .percent_s4_box4, .percent_s4_box5
+{
+    background: linear-gradient(to right, #EDEDED calc(var(--step0_box1_percent) * 100%), transparent 0%);
+    /* 아랫줄 수정 */
+    border: 1px solid #c1c1c1; 
+    /* box-shadow: 0px 3px 6px #00000029; 수정 */
+    border-radius: 14px;
+    width: 15%;
+    padding: 10px 15px;
+    position: relative;
+    cursor: pointer;
+    height: 100%;
+}
+
+.percent_s3_box1, .percent_s3_box2, .percent_s3_box3, .percent_s3_box4, .percent_s3_box5,
+.percent_s4_box1, .percent_s4_box2, .percent_s4_box3, .percent_s4_box4, .percent_s4_box5 {
+    height: 100%;
+}
+
+.percent_s1_hidden_box {
+    visibility: hidden;
+}
+
+.percent_s1_center_box, .percent_s1_box, .percent_s1_hidden_box{
+    /* 아랫줄 수정 */
+    border: 1px solid #c1c1c1; 
+    /* box-shadow: 0px 3px 6px #00000029; 수정 */
+    border-radius: 14px;
+    height: 100%;
+    padding: 0 15px;
+    position: relative;
+}
+
+.percent_s1_center_box {
+    width: 30%;
+    position: relative;
+}
+
+.percent_s1_box, .percent_s1_hidden_box{
+    width: 10%;
+}
+
+.step0_boxes, .step1_boxes, .step2_boxes, .step3_boxes, .step4_boxes {
+    width: 100%;
+    display: flex;
+}
+
+.step0_boxes, .step2_boxes, .step3_boxes, .step4_boxes{
+    position: relative;
+    justify-content: space-between;
+}
+
+.step0_border, .step1_border, .step2_border, .step3_border, .step4_border{
+    position: absolute;
+    background-color: transparent;
+    border-radius: 14px;
+    /* 아랫줄 수정 */
+    border: 1px solid #FFB300;
+    top: 0%;
+    left: 0%;
+    visibility: hidden;
+}
+
+
+.step0_border, .step2_border{
+    width: 100%;
+    height: 100%; 
+}
+
+.step1_border{
+    width: 100%;
+    height: 100%;
+}
+
+.step3_border, .step4_border {
+    width: 100%;
+    height: 100%;
+}
+
+.step1_boxes {
+    justify-content: space-evenly;
+    height: 150px;
+}
+
+.step1_notice, .step2_notice, .step3_notice, .step4_notice {
+    font-size: 20px;
+    color: #FFB300;
+    font-weight: bold;
+    /* 아랫줄 수정 */
+    width: 40%;
+}
+
+.step1_notice{
+    position: absolute;
+    left: 80%;
+    top: -20%;
+    visibility: hidden;
+}
+
+.step2_notice{
+    position: absolute;
+    left: 70%;
+    top: -30%;
+    visibility: hidden;
+}
+
+.step3_notice, .step4_notice{
+    position: absolute;
+    left: 70%;
+    top: -30%;
+    visibility: hidden;
+}
+
+.percent_box_title {
+    font-size: 13px;
+    color: #707070;
+}
+
+.percent_box_value {
+    font-size: 24px;
+    color: black;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0;
+}
+
+.percent_box_value2, .percent_box_value3 {
+    font-size: 20px;
+    color: #00AF91;
+    font-weight: bold;
+    position: absolute;
+    top:40%;
+    right: 20%;
+}
+
+.percent_box_value3 {
+    top:20%;
+    right: 20%;
+}
+
+/* step 3 */
+
+.step3_boxes ,.step4_boxes{
+    visibility:inherit;
+}
+
+.percent_s3_box1, .percent_s3_box2, .percent_s3_box3, .percent_s3_box4, .percent_s3_box5,
+.percent_s4_box1, .percent_s4_box2, .percent_s4_box3, .percent_s4_box4, .percent_s4_box5 {
+    visibility: hidden;
+}
+
+/* clicked node */
+.clicked_node {
+    background: linear-gradient(to right, #EDEDED calc(var(--step0_box1_percent) * 100%), #FFFAF0 0%);
+}
+
+/* left user */
+.left_user {
+    /* background-color: #F04D3E; */
+    /* 아래 줄 수정 */
+    background: linear-gradient(to right, #FFE7E5 100%, transparent 0%);
+    pointer-events: none;
+    /* 아랫 줄 수정 */
+    border: none;
+
+}
+
+.canvas3_container, .step3_boxes, .canvas4_container, .step4_boxes {
+    display:none;
+}
+
+.left_user > * {
+    /* 아래 줄 수정 */
+    color: #F04D3E;
+    pointer-events: none;
+}
+
+.unclickable {
+    pointer-events: none;
+}
+
+.check_funnel {
+    margin-top: 100px;
+    background-color: #242A30;
+    border-radius: 31px;
+    width: 100%;
+    height: 66px;
+    color: white;
+    font-size: 30px;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+.check_main_flow_btn {
+    margin-top: 5rem;
+}
+
+/* flowline */
+
+.box.flow .flowline_chart_container {
+    margin-top: 4rem;
+    position: relative;
+}
+.flowline_label > div {
+    width: calc(25% - 20px);
+    padding: 17px 0;
+    text-align: center;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    border-radius: 15px;
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+    margin-top: 1.75rem;
+}
+
+.first_labels {
+    border: 1px solid #FDA509;
+}
+.seceond_labels {
+    border: 1px solid #4D00FF;
+}
+.btn_group.flow_line {
+    margin-top: 3.19rem;
+}
+.flowline_tooltip {
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    padding: 1.13rem 1.13rem;
+    position: absolute;
+    border-radius: 22px;
+    box-shadow: 0px 0px 5px #0000001A;
+    opacity: 0;
+}
+.label_box + .label_box {
+    margin-top: .5rem;
+}
+.label_box > span:nth-child(2) {
+    margin-left: 1rem;
+    font-size: 1.13rem;
+    line-height: 1.5rem;
+    color: #505050;
+    letter-spacing: -0.25px;
+}
+
+.percent_box1, .percent_box2, .percent_box3, .percent_box4, .percent_box5 {
+    position: relative;
+    color: #FDA509;
+    font-size: 1.3rem;
+}
+
+.cicle_chart {
+    height: 208px;
+    position: relative;
+    width: 208px;
+}
+
+.tooltip_container {
+    box-shadow: 0px 0px 5px #0000001A;
+    border: 1px solid #EDEDED;
+    border-radius: 22px;
+    background: #FFFFFF 0% 0% no-repeat padding-box;
+    position: absolute;
+    left: 130px;
+    top: 95px;
+    width: 288px;
+    overflow: hidden;
+    z-index: 99;
+    display: none;
+}
+.tooltip_tit {
+    font-size: 1.13rem;
+    line-height: 1.38rem;
+    color: #909090;
+}
+.scroll_tooltip_title {
+    padding: 1.37rem 1.69rem;
+    background: #F7F7F7 0% 0% no-repeat padding-box;
+}
+.visitor_row {
+    padding-top: 1.63rem;
+    padding-left: 2rem;
+    padding-right: 1.6rem;
+}
+.visitor_row:last-child {
+    padding-bottom: 1.63rem;
+}
+.scroll_tooltip_title, .visitor_row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.scroll_page_title{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+.scroll_chart_container {
+    margin-top: 4.44rem;
+}

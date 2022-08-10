@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="136" height="135.598" viewBox="0 0 136 135.598">
+  <defs>
+    <filter id="사각형_705" x="0" y="0" width="136" height="135.598" filterUnits="userSpaceOnUse">
+      <feOffset dx="4" dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feFlood flood-opacity="0.102"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="그룹_2409" data-name="그룹 2409" transform="translate(-1046 -177.999)">
+    <g id="그룹_2408" data-name="그룹 2408">
+      <g id="그룹_1770" data-name="그룹 1770" transform="translate(913.887 155.711)">
+        <g transform="matrix(1, 0, 0, 1, 132.11, 22.29)" filter="url(#사각형_705)">
+          <rect id="사각형_705-2" data-name="사각형 705" width="100" height="99.598" rx="12" transform="translate(14 14)" fill="#3a5ca9"/>
+        </g>
+        <g id="그룹_1741" data-name="그룹 1741" transform="translate(184.114 52.289)">
+          <path id="패스_2401" data-name="패스 2401" d="M210.582,70.521v9.464h15.2l-2,15.378h-13.2v37.855h-16V95.363h-12.8V79.985h12.8V66.578c0-22.87,31.2-16.561,31.2-16.561V63.424h-8C208.981,63.424,210.582,70.521,210.582,70.521Z" transform="translate(-181.782 -49.219)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
