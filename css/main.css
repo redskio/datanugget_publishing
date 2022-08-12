@@ -164,6 +164,10 @@
     /* width 수정 */
 }
 
+.hidden_cell {
+    visibility: hidden;
+}
+
 .cell_title, .cell_data {
     font-size: 1rem;
 }

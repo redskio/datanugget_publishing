@@ -1,34 +1,82 @@
 $(function(){
     const root = document.querySelector(':root');
     root.style.setProperty('--step0_box1_percent', '0.50');
-    // root.style.setProperty('--step0_box2_percent', '0.60');
-    const c1_container = document.querySelector(".canvas1_container");
-    const c2_container = document.querySelector(".canvas2_container");
-    const c3_container = document.querySelector(".canvas3_container");
-    const c4_container = document.querySelector(".canvas4_container");
 
+    let c1_container = document.querySelector(".canvas1_container");
+    let c2_container = document.querySelector(".canvas2_container");
+    let c3_container = document.querySelector(".canvas3_container");
+    let c4_container = document.querySelector(".canvas4_container");
+    
     let canvas_width = document.querySelector(".step0_boxes").getBoundingClientRect().width;
     let canvas_height = document.querySelector(".step0_boxes").getBoundingClientRect().height;
+    let heightRatio = canvas_height / canvas_width;
+ 
     c1_container.innerHTML += `<canvas id="canvas1" width="${canvas_width}" height="${canvas_height}"></canvas>`
     c2_container.innerHTML += `<canvas id="canvas2" width="${canvas_width}" height="${canvas_height}"></canvas>`
     c3_container.innerHTML += `<canvas id="canvas3" width="${canvas_width}" height="${canvas_height}"></canvas>`
     c4_container.innerHTML += `<canvas id="canvas4" width="${canvas_width}" height="${canvas_height}"></canvas>`
 
-    const canvases = [document.getElementById('canvas1'), document.getElementById('canvas2'), document.getElementById('canvas3'), document.getElementById('canvas4')];
-    const canvas_drawes = [canvases[0].getContext('2d'), canvases[1].getContext('2d'), canvases[2].getContext('2d'), canvases[3].getContext('2d')];
- 
-    let s4_clicked_box_index;
-    let canvas3_selected_lines_index = [];
-    let canvas4_selected_lines_index = [];
+    let canvases = [document.getElementById('canvas1'), document.getElementById('canvas2'), document.getElementById('canvas3'), document.getElementById('canvas4')];
+    let canvas_drawes = [canvases[0].getContext('2d'), canvases[1].getContext('2d'), canvases[2].getContext('2d'), canvases[3].getContext('2d')];
+    const canvas_num = 4
+
     
     const clicked_box_elem = [];
     const isClicked = [false, false];
 
+
     const style = getComputedStyle(document.body);
     let step3_box_visibility = style.getPropertyValue('--visibility');
 
+const handle_resize = () => {
+    canvas_width = document.querySelector(".step0_boxes").getBoundingClientRect().width;
+    canvas_height = document.querySelector(".step0_boxes").getBoundingClientRect().height;
+    heightRatio = canvas_height / canvas_width;
 
-    // flow_data = {};
+    c1_container.removeChild(canvases[0]);
+    c2_container.removeChild(canvases[1]);
+    c3_container.removeChild(canvases[2]);
+    c4_container.removeChild(canvases[3]);
+    c1_container.innerHTML += `<canvas id="canvas1" width="${canvas_width}" height="${canvas_height}"></canvas>`;
+    c2_container.innerHTML += `<canvas id="canvas2" width="${canvas_width}" height="${canvas_height}"></canvas>`;
+    c3_container.innerHTML += `<canvas id="canvas3" width="${canvas_width}" height="${canvas_height}"></canvas>`;
+    c4_container.innerHTML += `<canvas id="canvas4" width="${canvas_width}" height="${canvas_height}"></canvas>`;
+    
+    update_coordinates();
+
+    for(let i = 0; i < canvas_num ; i++){
+        canvases[i] = document.getElementById(`canvas${i+1}`)
+        canvas_drawes[i] = canvases[i].getContext('2d')
+    }
+    for(let i = 0 ; i < 5 ; i++){
+        if(i === indexes[0]){
+            continue;
+        }
+        draw_canvas1_line(i, 0, false);
+    }
+
+    // draw default lines
+    for(let i = 0 ; i < 5 ; i++){ 
+        if(i === indexes[2]){
+            continue;
+        }
+        draw_canvas2_line(i, 0, false);
+   }
+
+    if(indexes[0]){
+        draw_canvas1_line(indexes[0], 0, true);
+    }
+    if(indexes[2]){
+        draw_canvas2_line(indexes[2], 0, true);
+    }
+
+    update_canvas3_boxes_lines();
+    update_canvas4_boxes_lines();
+}
+
+window.addEventListener('resize', handle_resize);
+
+    
 const make_random_value = (min, max) => {
         min = Math.ceil(min);
         max = Math.floor(max);
@@ -37,7 +85,6 @@ const make_random_value = (min, max) => {
       }
 
   const make_dump_data = (domain) => {
-    // flow_data.${domain}.domain_name = `www.${domain}`
 
     const direct_flow = [];
     const NAVER_flow = [];
@@ -389,12 +436,13 @@ const make_random_value = (min, max) => {
     }
   }
 
-const indexes = [0,0,0,0];
+const indexes = [];
 const step3_and_step4_etc_elems = [];
 
   let labbit = make_dump_data('labbit');
   labbit = labbit.labbit;
 
+  console.log('labbit = ',labbit);
     const handle_s0_boxes_click = (e, step_num) => {
 
         // reset step 0 ~ 1 isClicked
@@ -410,10 +458,11 @@ const step3_and_step4_etc_elems = [];
         }
 
         //reset clicked index
-        indexes[0] = 0;
-        indexes[1] = 0;
-        indexes[2] = 0;
-        indexes[3] = 0;
+        indexes[0] = null;
+        indexes[1] = null;
+        indexes[2] = null;
+        indexes[3] = null;
+        indexes[4] = null;
 
         //hide step3 boxes and canvas3
         const canvas3_container = document.querySelector('.canvas3_container');
@@ -497,7 +546,7 @@ const step3_and_step4_etc_elems = [];
         }
     }
 
-    const handle_s1_box_click = (e, step_num) => {
+    const handle_s1_box_click = (e) => {
 
         isClicked[1] = true;
 
@@ -507,9 +556,10 @@ const step3_and_step4_etc_elems = [];
         }
 
         //reset clicked indexes
-        indexes[1] = 0;
-        indexes[2] = 0;
-        indexes[3] = 0;
+        indexes[1] = null;
+        indexes[2] = null;
+        indexes[3] = null;
+        indexes[4] = null;
 
         //hide step3 boxes and canvas3
         const canvas3_container = document.querySelector('.canvas3_container');
@@ -599,7 +649,7 @@ const step3_and_step4_etc_elems = [];
         
     }
 
-    const handle_s2_boxes_click = (e, step_num) => {
+    const handle_s2_boxes_click = (e) => {
 
         // reset step 0 ~ 2 isClicked
 
@@ -620,13 +670,11 @@ const step3_and_step4_etc_elems = [];
         canvas_drawes[2].clearRect(0, 0, canvas_width, canvas_height);
         canvas_drawes[3].clearRect(0, 0, canvas_width, canvas_height);
         
-        // reset selected line index;
-        canvas3_selected_lines_index = [];
-        canvas4_selected_lines_index = [];
 
         //reset clicked index
-        indexes[2] = 0;
-        indexes[3] = 0;
+        indexes[2] = null;
+        indexes[3] = null;
+        indexes[4] = null;
 
         // reset elem's yellow color and border and step notice
         if(clicked_box_elem[2]){
@@ -685,8 +733,6 @@ const step3_and_step4_etc_elems = [];
             step3_and_step4_etc_elems[0].classList.add('etc_user')
         }
 
-        // const insert_step3_data = (data, step0_inflow_route, step2_page_num)
-
         // color elem's yellow 
         clicked_box_elem[2] = document.querySelector(`.step2_boxes [data-index="${indexes[2]}"]`)
         
@@ -711,63 +757,7 @@ const step3_and_step4_etc_elems = [];
 
         // show 3 boxes after click step2's certain box
 
-        const step3_sibling_nodes = document.querySelectorAll(`.step${step_num + 1}_boxes > div`);
-        // const step3_left_user_title_nodes = document.querySelectorAll(`.step3_boxes > div :nth-child(2)`); // 추가
-        step3_sibling_nodes.forEach((item) => item.style.visibility = 'hidden');
-        step3_sibling_nodes.forEach((item) => item.classList.remove('left_user')); // 추가
-        // step3_left_user_title_nodes.forEach(item => item.textContent = "직접유입");
-
-        if (indexes[2] === 0) {
-            step3_sibling_nodes[indexes[2]].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2] + 1].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2] + 2].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2] + 2].classList.add('left_user') //추가
-            // step3_left_user_title_nodes[indexes[2] + 2].textContent = "이탈유저" // 추가
-
-            // (start_index, end_index, selected)
-            draw_canvas3_line(indexes[2], indexes[2], false);
-            draw_canvas3_line(indexes[2] + 1, indexes[2], false);
-            draw_canvas3_line(indexes[2] + 2, indexes[2], false);
-
-            canvas3_selected_lines_index.push(indexes[2]);
-            canvas3_selected_lines_index.push(indexes[2] + 1);
-            canvas3_selected_lines_index.push(indexes[2] + 2);
-
-
-        }else if (indexes[2] === 1 || indexes[2] === 2 || indexes[2] === 3) {
-            step3_sibling_nodes[indexes[2] - 1].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2]].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2] + 1].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2] + 1].classList.add('left_user') //추가
-            // step3_left_user_title_nodes[index + 1].textContent = "이탈유저" // 추가
-
-            // (start_index, end_index, selected)
-            draw_canvas3_line(indexes[2] - 1, indexes[2], false);
-            draw_canvas3_line(indexes[2], indexes[2], false);
-            draw_canvas3_line(indexes[2] + 1, indexes[2], false);
-
-            canvas3_selected_lines_index.push(indexes[2] - 1);
-            canvas3_selected_lines_index.push(indexes[2]);
-            canvas3_selected_lines_index.push(indexes[2] + 1);
-            
-
-
-        }else {
-            step3_sibling_nodes[indexes[2] - 2].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2] - 1].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2]].style.visibility = 'visible'
-            step3_sibling_nodes[indexes[2]].classList.add('left_user') //추가
-            // step3_left_user_title_nodes[index].textContent = "이탈유저" // 추가
-
-            // (start_index, end_index, selected)
-            draw_canvas3_line(indexes[2] - 2, indexes[2], false);
-            draw_canvas3_line(indexes[2] - 1, indexes[2], false);
-            draw_canvas3_line(indexes[2], indexes[2], false);
-
-            canvas3_selected_lines_index.push(indexes[2] - 2);
-            canvas3_selected_lines_index.push(indexes[2] - 1);
-            canvas3_selected_lines_index.push(indexes[2]);
-        }
+        update_canvas3_boxes_lines();
     }
 
     const handle_s3_boxes_click = (e, step_num) => {
@@ -795,7 +785,8 @@ const step3_and_step4_etc_elems = [];
         canvas4_selected_lines_index = [];
 
         //reset clicked index
-        indexes[3] = 0;
+        indexes[3] = null;
+        indexes[4] = null;
 
         // reset all past selected border
         const s3_border_siblings_node = document.querySelectorAll(`.step3_boxes .step3_border`);
@@ -809,6 +800,7 @@ const step3_and_step4_etc_elems = [];
         }
 
         indexes[3] =  parseInt(e.target.dataset.index);
+        
         if(indexes[0] === 0){
             insert_step4_data(labbit, 'direct_inflow', indexes[2] + 1);
         }else if(indexes[0] === 1){
@@ -847,73 +839,9 @@ const step3_and_step4_etc_elems = [];
         // show step notice
         clicked_box_elem[3].lastChild.style.visibility = "visible";
 
-        // draw hightlighted lines
-        draw_canvas3_line(indexes[3], indexes[2], true);
-
-        for(let i = 0 ; i < canvas3_selected_lines_index.length ; i++){
-            if(indexes[3] === canvas3_selected_lines_index[i]){
-                continue;
-            }
-            draw_canvas3_line(canvas3_selected_lines_index[i], indexes[2], false);
-        }
-        
-        // show 3 boxes after click step2's certain box
-
-        const step4_sibling_nodes = document.querySelectorAll(`.step4_boxes > div`);
-        step4_sibling_nodes.forEach((item) => item.classList.remove('left_user')); // 추가
-        step4_sibling_nodes.forEach((item) => item.style.visibility = 'hidden');
-        const step4_left_user_title_nodes = document.querySelectorAll(`.step4_boxes > div :nth-child(2)`); // 추가
-        // step4_left_user_title_nodes.forEach(item => item.textContent = "직접유입"); // 추가
-
-        if (indexes[3] === 0) {
-            step4_sibling_nodes[indexes[3]].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3] + 1].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3] + 2].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3] + 2].classList.add('left_user') //추가
-            // step4_left_user_title_nodes[index + 2].textContent = "이탈유저" // 추가
-
-            // (start_index, end_index, selected)
-            draw_canvas4_line(indexes[3], indexes[3], false);
-            draw_canvas4_line(indexes[3] + 1, indexes[3], false);
-            draw_canvas4_line(indexes[3] + 2, indexes[3], false);
-
-            canvas4_selected_lines_index.push(indexes[3]);
-            canvas4_selected_lines_index.push(indexes[3] + 1);
-            canvas4_selected_lines_index.push(indexes[3] + 2);
-
-        } else if (indexes[3] === 1 || indexes[3] === 2 || indexes[3] === 3) {
-            step4_sibling_nodes[indexes[3] - 1].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3]].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3] + 1].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3] + 1].classList.add('left_user') //추가
-            // step4_left_user_title_nodes[index + 1].textContent = "이탈유저" // 추가
-
-
-            // (start_index, end_index, selected)
-            draw_canvas4_line(indexes[3] - 1, indexes[3], false);
-            draw_canvas4_line(indexes[3], indexes[3], false);
-            draw_canvas4_line(indexes[3] + 1, indexes[3], false);
-
-            canvas4_selected_lines_index.push(indexes[3] - 1);
-            canvas4_selected_lines_index.push(indexes[3]);
-            canvas4_selected_lines_index.push(indexes[3] + 1);
-
-        } else {
-            step4_sibling_nodes[indexes[3] - 2].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3] - 1].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3]].style.visibility = 'visible'
-            step4_sibling_nodes[indexes[3]].classList.add('left_user') //추가
-            // step4_left_user_title_nodes[index].textContent = "이탈유저" // 추가
-
-            // (start_index, end_index, selected)
-            draw_canvas4_line(indexes[3] - 2, indexes[3], false);
-            draw_canvas4_line(indexes[3] - 1, indexes[3], false);
-            draw_canvas4_line(indexes[3], indexes[3], false);
-
-            canvas4_selected_lines_index.push(indexes[3] - 2);
-            canvas4_selected_lines_index.push(indexes[3] - 1);
-            canvas4_selected_lines_index.push(indexes[3]);
-        }
+        update_canvas3_boxes_lines();
+        update_canvas4_boxes_lines();
+        // update_canvas4_boxes_lines(); 
     }
 
     const handle_s4_boxes_click = (e, step_num) => {
@@ -928,13 +856,16 @@ const step3_and_step4_etc_elems = [];
             clicked_box_elem[4].lastChild.style.visibility = 'hidden';
         }
 
+        indexes[4] = null
+
         canvas_drawes[3] = canvas4.getContext('2d');
         
-        const index = parseInt(e.target.dataset.index);
-        s4_clicked_box_index = index;
+        indexes[4] = parseInt(e.target.dataset.index);
+        
+        s4_clicked_box_index = indexes[4];
 
          // color elem's yellow 
-        clicked_box_elem[4] = document.querySelector(`.step4_boxes [data-index="${index}"]`)
+        clicked_box_elem[4] = document.querySelector(`.step4_boxes [data-index="${indexes[4]}"]`)
         clicked_box_elem[4].classList.add("clicked_node");
         
         // color target node's border
@@ -944,10 +875,10 @@ const step3_and_step4_etc_elems = [];
         clicked_box_elem[4].lastChild.style.visibility = "visible";
         
         // draw hightlighted lines
-        draw_canvas4_line(index, indexes[3], true);
+        draw_canvas4_line(indexes[4], indexes[3], true);
         
         for(let i = 0 ; i < canvas4_selected_lines_index.length ; i++){
-            if(index === canvas4_selected_lines_index[i]){
+            if(indexes[4] === canvas4_selected_lines_index[i]){
                 continue;
             }
             draw_canvas4_line(canvas4_selected_lines_index[i], indexes[3], false);
@@ -1182,7 +1113,6 @@ const step2_data =
             },
         ]
     
-// console.log('step2_data = ', step2_data);
 
 const step2_num = 2;
 const s2_boxes = d3.select(".step2_boxes")          
@@ -1421,45 +1351,56 @@ const update_step4_data = () => {
                 }
             }
 
-        
-
-// step 0 curve lines 
-        const percent_s0_box1 = document.querySelector('.percent_s0_box1');
-
+        let percent_s0_box1 = document.querySelector('.percent_s0_box1')    
         let s0_box_width = percent_s0_box1.clientWidth;
         let width_between_boxes = (canvas_width - (s0_box_width * 5)) / 4
-
-        const box1_x = s0_box_width * 0 + width_between_boxes * 0 + s0_box_width / 2;
-        const box2_x = s0_box_width * 1 + width_between_boxes * 1 + s0_box_width / 2;
-        const box3_x = s0_box_width * 2 + width_between_boxes * 2 + s0_box_width / 2;
-        const box4_x = s0_box_width * 3 + width_between_boxes * 3 + s0_box_width / 2;
-        const box5_x = s0_box_width * 4 + width_between_boxes * 4 + s0_box_width / 2;
-
-            const step0_canvas_downside_coord_x_y = [
+            
+        let box1_x = s0_box_width * 0 + width_between_boxes * 0 + s0_box_width / 2;
+        let box2_x = s0_box_width * 1 + width_between_boxes * 1 + s0_box_width / 2;
+        let box3_x = s0_box_width * 2 + width_between_boxes * 2 + s0_box_width / 2;
+        let box4_x = s0_box_width * 3 + width_between_boxes * 3 + s0_box_width / 2;
+        let box5_x = s0_box_width * 4 + width_between_boxes * 4 + s0_box_width / 2;
+            
+            let canvas_downside_coord_x_y = [
                 { box_x: box1_x, box_y: 0 }, 
                 { box_x: box2_x, box_y: 0 }, 
                 { box_x: box3_x, box_y: 0 }, 
                 { box_x: box4_x, box_y: 0 }, 
                 { box_x: box5_x, box_y: 0 }, 
             ];
-
-            const step1_canvas_upperside_coord_x_y = [
+        
+            let canvas_upperside_coord_x_y = [
+                { box_x: box1_x, box_y: canvas_height }, 
+                { box_x: box2_x, box_y: canvas_height }, 
+                { box_x: box3_x, box_y: canvas_height }, 
+                { box_x: box4_x, box_y: canvas_height }, 
+                { box_x: box5_x, box_y: canvas_height }, 
+            ];
+        
+            let step1_canvas_upperside_coord_x_y = [
                 { box_x: (canvas_width / 2), box_y: canvas_height }, 
             ]
-
-            const step1_canvas_downside_coord_x_y = [
+        
+            let step1_canvas_downside_coord_x_y = [
                 { box_x: (canvas_width / 2), box_y: 0 }, 
             ]
 
-            const step2_canvas_upperside_coord_x_y = [
-                { box_x: box1_x, box_y: canvas_height }, 
-                { box_x: box2_x, box_y: canvas_height }, 
-                { box_x: box3_x, box_y: canvas_height }, 
-                { box_x: box4_x, box_y: canvas_height }, 
-                { box_x: box5_x, box_y: canvas_height }, 
-            ];
+        
 
-            const step2_canvas_downside_coord_x_y = [
+// step 0 curve lines 
+const update_coordinates = () => {
+     percent_s0_box1 = document.querySelector('.percent_s0_box1');
+
+     s0_box_width = percent_s0_box1.clientWidth;
+     width_between_boxes = (canvas_width - (s0_box_width * 5)) / 4
+
+     box1_x = s0_box_width * 0 + width_between_boxes * 0 + s0_box_width / 2;
+     box2_x = s0_box_width * 1 + width_between_boxes * 1 + s0_box_width / 2;
+     box3_x = s0_box_width * 2 + width_between_boxes * 2 + s0_box_width / 2;
+     box4_x = s0_box_width * 3 + width_between_boxes * 3 + s0_box_width / 2;
+     box5_x = s0_box_width * 4 + width_between_boxes * 4 + s0_box_width / 2;
+
+         canvas_downside_coord_x_y = [
                 { box_x: box1_x, box_y: 0 }, 
                 { box_x: box2_x, box_y: 0 }, 
                 { box_x: box3_x, box_y: 0 }, 
@@ -1467,7 +1408,7 @@ const update_step4_data = () => {
                 { box_x: box5_x, box_y: 0 }, 
             ];
 
-            const step3_canvas_upperside_coord_x_y = [
+         canvas_upperside_coord_x_y = [
                 { box_x: box1_x, box_y: canvas_height }, 
                 { box_x: box2_x, box_y: canvas_height }, 
                 { box_x: box3_x, box_y: canvas_height }, 
@@ -1475,23 +1416,14 @@ const update_step4_data = () => {
                 { box_x: box5_x, box_y: canvas_height }, 
             ];
 
-            const step3_canvas_downside_coord_x_y = [
-                { box_x: box1_x, box_y: 0 }, 
-                { box_x: box2_x, box_y: 0 }, 
-                { box_x: box3_x, box_y: 0 }, 
-                { box_x: box4_x, box_y: 0 }, 
-                { box_x: box5_x, box_y: 0 }, 
-            ];
+         step1_canvas_upperside_coord_x_y = [
+                { box_x: (canvas_width / 2), box_y: canvas_height }, 
+            ]
 
-            const step4_canvas_upperside_coord_x_y = [
-                { box_x: box1_x, box_y: canvas_height }, 
-                { box_x: box2_x, box_y: canvas_height }, 
-                { box_x: box3_x, box_y: canvas_height }, 
-                { box_x: box4_x, box_y: canvas_height }, 
-                { box_x: box5_x, box_y: canvas_height }, 
-            ];
-
-
+         step1_canvas_downside_coord_x_y = [
+                { box_x: (canvas_width / 2), box_y: 0 }, 
+            ]
+        }
 
     // 실제로 그려지는 위치의 캔버스 생성
 
@@ -1506,13 +1438,12 @@ const update_step4_data = () => {
                 canvas_drawes[0].setLineDash([4]);
             }
 
-    
-            canvas_drawes[0].moveTo(step0_canvas_downside_coord_x_y[start_index].box_x, step0_canvas_downside_coord_x_y[start_index].box_y);
+            canvas_drawes[0].moveTo(canvas_downside_coord_x_y[start_index].box_x, canvas_downside_coord_x_y[start_index].box_y);
 
             //bezierCurveTo(조절점1x, 조절점1y, 조절점2x, 조절점2y, 선의 끝점x, 선의 끝점y)
             canvas_drawes[0].bezierCurveTo(
-                            step0_canvas_downside_coord_x_y[start_index].box_x, step2_canvas_upperside_coord_x_y[start_index].box_y / 2, 
-                            step1_canvas_upperside_coord_x_y[end_index].box_x, step2_canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            canvas_downside_coord_x_y[start_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            step1_canvas_upperside_coord_x_y[end_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
                             step1_canvas_upperside_coord_x_y[end_index].box_x, step1_canvas_upperside_coord_x_y[end_index].box_y
                             );
             canvas_drawes[0].lineWidth = 1;
@@ -1532,18 +1463,18 @@ const update_step4_data = () => {
             }
 
     
-            canvas_drawes[1].moveTo(step2_canvas_upperside_coord_x_y[start_index].box_x, step2_canvas_upperside_coord_x_y[start_index].box_y);
+            canvas_drawes[1].moveTo(canvas_upperside_coord_x_y[start_index].box_x, canvas_upperside_coord_x_y[start_index].box_y);
             //bezierCurveTo(조절점1x, 조절점1y, 조절점2x, 조절점2y, 선의 끝점x, 선의 끝점y)
             canvas_drawes[1].bezierCurveTo(
-                            step2_canvas_upperside_coord_x_y[start_index].box_x, step2_canvas_upperside_coord_x_y[start_index].box_y / 2, 
-                            step1_canvas_downside_coord_x_y[end_index].box_x, step2_canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            canvas_upperside_coord_x_y[start_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            step1_canvas_downside_coord_x_y[end_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
                             step1_canvas_downside_coord_x_y[end_index].box_x, step1_canvas_downside_coord_x_y[end_index].box_y
                             );
             canvas_drawes[1].lineWidth = 1;
             canvas_drawes[1].stroke();
         }
 
-
+        canvas_upperside_coord_x_y
         const draw_canvas3_line = (start_index, end_index, selected) => {
             canvas_drawes[2].beginPath();
 
@@ -1555,12 +1486,12 @@ const update_step4_data = () => {
                 canvas_drawes[2].setLineDash([4]);
             }
     
-            canvas_drawes[2].moveTo(step3_canvas_upperside_coord_x_y[start_index].box_x, step3_canvas_upperside_coord_x_y[start_index].box_y);
+            canvas_drawes[2].moveTo(canvas_upperside_coord_x_y[start_index].box_x, canvas_upperside_coord_x_y[start_index].box_y);
             //bezierCurveTo(조절점1x, 조절점1y, 조절점2x, 조절점2y, 선의 끝점x, 선의 끝점y)
             canvas_drawes[2].bezierCurveTo(
-                            step3_canvas_upperside_coord_x_y[start_index].box_x, step3_canvas_upperside_coord_x_y[start_index].box_y / 2, 
-                            step2_canvas_downside_coord_x_y[end_index].box_x, step3_canvas_upperside_coord_x_y[start_index].box_y / 2, 
-                            step2_canvas_downside_coord_x_y[end_index].box_x, step2_canvas_downside_coord_x_y[end_index].box_y
+                            canvas_upperside_coord_x_y[start_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            canvas_downside_coord_x_y[end_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            canvas_downside_coord_x_y[end_index].box_x, canvas_downside_coord_x_y[end_index].box_y
                             );
             canvas_drawes[2].lineWidth = 1;
             canvas_drawes[2].stroke();
@@ -1577,12 +1508,12 @@ const update_step4_data = () => {
                 canvas_drawes[3].setLineDash([4]);
             }
     
-            canvas_drawes[3].moveTo(step4_canvas_upperside_coord_x_y[start_index].box_x, step4_canvas_upperside_coord_x_y[start_index].box_y);
+            canvas_drawes[3].moveTo(canvas_upperside_coord_x_y[start_index].box_x, canvas_upperside_coord_x_y[start_index].box_y);
             //bezierCurveTo(조절점1x, 조절점1y, 조절점2x, 조절점2y, 선의 끝점x, 선의 끝점y)
             canvas_drawes[3].bezierCurveTo(
-                            step4_canvas_upperside_coord_x_y[start_index].box_x, step4_canvas_upperside_coord_x_y[start_index].box_y / 2, 
-                            step3_canvas_downside_coord_x_y[end_index].box_x, step4_canvas_upperside_coord_x_y[start_index].box_y / 2, 
-                            step3_canvas_downside_coord_x_y[end_index].box_x, step3_canvas_downside_coord_x_y[end_index].box_y
+                            canvas_upperside_coord_x_y[start_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            canvas_downside_coord_x_y[end_index].box_x, canvas_upperside_coord_x_y[start_index].box_y / 2, 
+                            canvas_downside_coord_x_y[end_index].box_x, canvas_downside_coord_x_y[end_index].box_y
                             );
             canvas_drawes[3].lineWidth = 1;
             canvas_drawes[3].stroke();
@@ -1751,6 +1682,123 @@ const update_step4_data = () => {
         update_step4_data(); 
 }
 
+    const update_canvas3_boxes_lines = () => {
+
+        // draw hightlighted lines
+        if(indexes[3] !== null){
+            draw_canvas3_line(indexes[3], indexes[2], true);
+        }
+        
+        
+
+        const step3_sibling_nodes = document.querySelectorAll(`.step3_boxes > div`);
+        step3_sibling_nodes.forEach((item) => item.style.visibility = 'hidden');
+        step3_sibling_nodes.forEach((item) => item.classList.remove('left_user')); // 추가
+        
+        
+        if (indexes[2] === 0) {
+            step3_sibling_nodes[indexes[2]].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2] + 1].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2] + 2].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2] + 2].classList.add('left_user') //추가
+
+            for(let i = 0 ; i < 3 ; i++){
+                if(i === indexes[3]){
+                    continue;
+                }
+                draw_canvas3_line(i, indexes[2], false);
+            }
+
+
+        }else if (indexes[2] === 1 || indexes[2] === 2 || indexes[2] === 3) {
+            step3_sibling_nodes[indexes[2] - 1].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2]].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2] + 1].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2] + 1].classList.add('left_user') //추가
+        
+
+            // (start_index, end_index, selected)
+            
+            for(i = indexes[2] ; i < indexes[2] + 3; i++){
+                if(indexes[3] !== null && i === (indexes[3] + 1)){
+                    continue;
+                }
+                draw_canvas3_line(i - 1, indexes[2], false);
+            }
+
+
+        }else {
+            step3_sibling_nodes[indexes[2] - 2].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2] - 1].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2]].style.visibility = 'visible'
+            step3_sibling_nodes[indexes[2]].classList.add('left_user') //추가
+        }
+    }
+    const update_canvas4_boxes_lines = () => {
+        // draw hightlighted lines
+        
+        
+        // draw hightlighted lines
+        if(indexes[4] !== null){
+            draw_canvas4_line(indexes[4], indexes[3], true);
+        }
+        
+        // show 3 boxes after click step2's certain box
+
+        const step4_sibling_nodes = document.querySelectorAll(`.step4_boxes > div`);
+        step4_sibling_nodes.forEach((item) => item.classList.remove('left_user')); // 추가
+        step4_sibling_nodes.forEach((item) => item.style.visibility = 'hidden');
+    
+
+        if (indexes[3] === 0) {
+            step4_sibling_nodes[indexes[3]].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3] + 1].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3] + 2].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3] + 2].classList.add('left_user') //추가
+        
+            for(let i = 0 ; i < 3 ; i++){
+                if(indexes[4] !== null && i === indexes[3]){
+                    continue;
+                }
+                draw_canvas4_line(i, indexes[3], false);
+            }
+
+            canvas4_selected_lines_index.push(indexes[3]);
+            canvas4_selected_lines_index.push(indexes[3] + 1);
+            canvas4_selected_lines_index.push(indexes[3] + 2);
+
+        } else if (indexes[3] === 1 || indexes[3] === 2) {
+            step4_sibling_nodes[indexes[3] - 1].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3]].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3] + 1].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3] + 1].classList.add('left_user') //추가
+        
+
+
+            // (start_index, end_index, selected)
+            for(i = indexes[3] ; i < indexes[3] + 3; i++){
+                if(indexes[4] !== null && i === (indexes[4] + 1)){
+                    continue;
+                }
+                draw_canvas4_line(i - 1, indexes[3], false);
+            }
+
+            canvas4_selected_lines_index.push(indexes[3] - 1);
+            canvas4_selected_lines_index.push(indexes[3]);
+            canvas4_selected_lines_index.push(indexes[3] + 1);
+
+        } else {
+            step4_sibling_nodes[indexes[3] - 2].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3] - 1].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3]].style.visibility = 'visible'
+            step4_sibling_nodes[indexes[3]].classList.add('left_user') //추가
+        
+
+            canvas4_selected_lines_index.push(indexes[3] - 2);
+            canvas4_selected_lines_index.push(indexes[3] - 1);
+            canvas4_selected_lines_index.push(indexes[3]);
+        }
+    }
         insert_step0_data(labbit);
         insert_step1_data(labbit);
         reset_step2_data();

@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 ]   
     },
     };
+    const cell_num = 5;
 
     const handle_mouseover = (e, d) => {   
         const index = parseInt(e.target.dataset.id);
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function(){
         heatmap_tooltip
         .style("opacity", 1)
         .html(`${period_data}<br>사용자 유지율:${user_rate}<br>사용자 수:${user_num}명`)
-        .style("left", d3.pointer(e, e.target.parentNode.parentNode.parentNode)[0] + 700 + "px")
+        .style("left", d3.pointer(e, e.target.parentNode.parentNode.parentNode)[0] + 600 + "px")
         .style("top", pointer_y  + "px")
     
     }
@@ -82,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function(){
         heatmap_tooltip
         .style("opacity", 1)
         .html(`${period_data}<br>사용자 유지율:${user_rate}<br>사용자 수:${user_num}명`)
-        .style("left", d3.pointer(e, e.target.parentNode.parentNode.parentNode)[0] + 700 + "px")
+        .style("left", d3.pointer(e, e.target.parentNode.parentNode.parentNode)[0] + 600 + "px")
         .style("top", pointer_y  + "px")
     }
     
@@ -129,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function(){
         .data([data.period1_data])
         .enter()
         
-        for(let i = 0; i < data.period1_data.user_num.length; i++){
+        for(let i = 0; i < cell_num; i++){
             const temp_row = row3.append('div')
             .attr('class', 'cell week1 flow_box')
             .attr('data-id', i)
@@ -152,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function(){
         .data([data.period2_data])
         .enter()
         
-        for(let i = 0; i < data.period2_data.user_num.length; i++){
+        for(let i = 0; i < cell_num; i++){
             const temp_row = row4.append('div')
             .attr('class', 'cell week2 flow_box')
             .attr('data-id', i)
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function(){
         .data([data.period3_data])
         .enter()
         
-        for(let i = 0; i < data.period3_data.user_num.length; i++){
+        for(let i = 0; i < cell_num; i++){
             const temp_row = row5.append('div')
             .attr('class', 'cell week3 flow_box')
             .attr('data-id', i)
@@ -198,7 +199,7 @@ document.addEventListener('DOMContentLoaded', function(){
         .data([data.period4_data])
         .enter()
         
-        for(let i = 0; i < data.period4_data.user_num.length; i++){
+        for(let i = 0; i < cell_num; i++){
             const temp_row = row6.append('div')
             .attr('class', 'cell week4 flow_box')
             .attr('data-id', i)
@@ -221,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function(){
         .data([data.period5_data])
         .enter()
         
-        for(let i = 0; i < data.period5_data.user_num.length; i++){
+        for(let i = 0; i < cell_num; i++){
             const temp_row = row7.append('div')
             .attr('class', 'cell week5 flow_box')
             .attr('data-id', i)
@@ -239,7 +240,15 @@ document.addEventListener('DOMContentLoaded', function(){
             })
             .attr('data-id', i)
         }
-    
+        
+        for(let i = 0; i < cell_num - 1; i++){
+            const row = document.querySelectorAll(`.week${i+2}`);
+            for(let k = cell_num - 1; k  >= cell_num - (i+1); k--){
+                row[k].classList.add('hidden_cell');
+            }
+            
+        }
+
     
     const heatmap_tooltip = d3.select("#heatmap_graph")
         .append("div")
